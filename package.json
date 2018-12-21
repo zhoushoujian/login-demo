@@ -1,0 +1,14 @@
+{
+  "name": "sign-backend",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "jsonwebtoken": "^8.4.0",
+    "mongodb": "^3.1.10"
+  },
+  "scripts": {
+    "start": "node server.js ",
+    "db": "mongod --dbpath C:\\Users\\Administrator\\Desktop\\登录系统_react\\db --port=27017",
+    "react": "cd my-app && npm run start"
+  }
+}
