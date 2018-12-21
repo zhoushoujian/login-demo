@@ -1,0 +1,148 @@
+.sign-main {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: #dbede9;
+}
+
+.header {
+	display: flex;
+	width: 90%;
+	height: 48px;
+	line-height: 48px;
+	font-size: 18px;
+	justify-content: flex-end;
+	padding: 0 15px;
+}
+
+.user {
+	color: red;
+}
+
+.greetings {
+	color: block;
+	font-size: inherit;
+}
+
+.logout {
+	color: green;
+	cursor: pointer;
+}
+
+.body {
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-grow: 1;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.sign-area {
+	display: flex;
+	width: 100%;
+	height: 300px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.sign {
+	width: 150px;
+	height: 150px;
+	border: 1px solid #FFD700;
+	border-radius: 50%;
+	background-color: #FAFFBD;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 36px;
+	color: #3CB371;
+	cursor: pointer;
+}
+
+.sign:active {
+	color: #32CD32;
+	background-color: #FFD700;
+}
+
+.last-sign-time {
+	margin-top: 20px;
+	font-size: 16px;
+	color: #808080;
+}
+/* .today {
+	margin-top: 20px;
+	font-size: 16px;
+	color: #808080;
+} */
+
+.count-area {
+	display: flex;
+	width: 100%;
+	height: auto;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex: 1
+}
+
+.signed {
+	display: flex;
+	width: 100%;
+	height: auto;
+	flex: 1;
+	padding-top: 15px;
+	min-height: 100px;
+}
+
+.signed-text {
+	width: 65px;
+	display: flex;
+	flex-shrink: 0;
+}
+
+.signed-persons {
+	color: green;
+	display: flex;
+	width: 100%;
+	word-break: break-all;
+	overflow: auto;
+}
+
+.not-signed {
+	display: flex;
+	width: 100%;
+	height: auto;
+	flex: 1;
+	padding-top: 15px;
+	min-height: 100px;
+}
+
+.not-signed-text {
+	width: 65px;
+	display: flex;
+	flex-shrink: 0;
+}
+
+.not-signed-persons {
+	color: red;
+	display: flex;
+	width: 100%;
+	word-break: break-all;
+	overflow: auto;
+}
+/* .foot {
+	display: flex;
+	width: 100%;
+	height: 64px;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+} */
