@@ -96,7 +96,6 @@ function showPosition(position){
 
 function getLocation(){ 
   if (navigator.geolocation){
-		console.warn("000")
     navigator.geolocation.getCurrentPosition(showPosition,showError); 
   }else{ 
     $("#position-location").html("浏览器不支持地理定位。"); 

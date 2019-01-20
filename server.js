@@ -1,3 +1,4 @@
+//nodejs + react + mongodb + jwt
 require('./logger'); //加载日志系统
 let os = require("os"),
     numCPUs = os.cpus().length,

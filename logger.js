@@ -1,11 +1,12 @@
 //made by zhoushoujian on 2018/12/13
 let fs = require('fs'),
     time,
-    list = [],
     LOG_FILE_MAX_SIZE = 1024 * 1024 * 5,
-    LOGGER_LEVEL = ["debug", "info", "warn", "error"];
+    LOGGER_LEVEL = ["debug", "info", "warn", "error"],
+    list = [],
+    flag = true;
 
-//自定义控制台打印颜色
+//自定义控制台颜色输出
 {
     let colors = {
         Reset: "\x1b[0m",
@@ -14,37 +15,27 @@ let fs = require('fs'),
         FgYellow: "\x1b[33m",
         FgBlue: "\x1b[34m"
     };
-    let length = 0;
     "debug:debug:FgBlue,info::FgGreen,warn:警告:FgYellow,error:error:FgRed".split(",").forEach(function (logcolor) {
         let [log, info, color] = logcolor.split(':');
         let logger = function (...args) {
-            let message = args.join(" ");
-            console.log("");
-            process.stdout.write("\b \b".repeat(length << 1) + message);
-            length = message.length;
-        } || console[log] || console.log;
-        console[log] = (...args) => {
-            let logData=[],flag;
-            args.forEach((arg,i,arr) => {
-                if(Object.prototype.toString.call(arg) === "[object Object]"){
-                    flag = true;
-                    arg = JSON.stringify(arg, function (key, value) {
-                        return value;
-                    }, 4);
-                } else if (Object.prototype.toString.call(arg) === "[object Null]"){
-                    flag = true;
-                    arg = "null";
-                }
-                logData.push(arg);
+            var m = args.slice(1, args.length - 1).map(function(s){
+                return JSON.stringify(s,function(k,v){
+                    if (typeof v === 'function') {
+                        return Function.prototype.toString.call(v)
+                    } else {
+                        for (var i in v) {
+                            var p = v[i];
+                            v[i] = p instanceof Function ? String(p) : p;
+                        }
+                        return v;
+                    }
+                },4)
             });
-            if(flag){
-               return  logger.apply(null, [`[${getTime()}]  ${colors[color]}[${info.toUpperCase()||log.toUpperCase()}]${colors.Reset}`, logData, colors.Reset]);
-            };
-            return logger.apply(null, [`[${getTime()}]  ${colors[color]}[${info.toUpperCase()||log.toUpperCase()}]${colors.Reset}`, ...args, colors.Reset]);
-        }
+            process.stdout.write(args[0] + m + args[args.length - 1] + '\n\n')
+        } || console[log] || console.log;
+        console[log] = (...args) => logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()||log.toUpperCase()}]${colors.Reset} `, ...args, colors.Reset]);
     });
 }
-
 
 function getTime() {
     let year = new Date().getFullYear();
@@ -73,63 +64,74 @@ function getTime() {
     return time;
 }
 
-function activate() {
-    let buffer = list.shift();
-    excute(buffer).then(
-        function () {
-            if (list.length > 0) {
-                activate();
-            }
-        }
-    );
-}
-
-function excute(buffer) {
-    return new Promise((resolve, reject) => {
-            fs.stat("./server.log", function (err, stats) {
-                if (err) {
-                    if (!fs.existsSync("./server.log")) {
-                        fs.appendFileSync("./server.log");
-                    }
-                    resolve();
-                } else {
-                    return new Promise((resolve, reject) => {
-                            if (stats.size > LOG_FILE_MAX_SIZE) {
-                                fs.readdir("/", (err, files) => {
-                                    if (err) throw err
-                                    let fileList = files.filter(function (file) {
-                                        return /^server[0-9]*\.log$/i.test(file);
-                                    });
-                                    for (let i = fileList.length; i > 0; i--) {
-                                        if (i >= 10) {
-                                            fs.unlinkSync("/" + fileList[i - 1]);
-                                            continue;
-                                        }
-                                        fs.renameSync("/" + fileList[i - 1], "server" + i + ".log");
-                                    }
-                                });
-                                resolve();
-                            } else {
-                                resolve();
-                            }
-                        })
-                        .then(resolve)
-                        .catch(resolve);
-                }
-            })
-        })
-        .then(() => {
-            return new Promise(function (res, rej) {
-                fs.writeFileSync("server.log", buffer, {
-                    flag: "a+"
-                });
-                res();
-            })
-        })
-}
-
 function doLogInFile(buffer) {
-    buffer && list.push(buffer) && activate();
+    buffer && list.push(buffer);
+    flag && activate();
+}
+
+function activate() {
+    flag = false;
+    let buffer = list.shift();
+    execute(buffer).then(() => new Promise(res => {
+        list.length ? activate() : flag = true;
+        res();
+    }).catch(err => {
+        flag = true;
+        console.error('An error hanppened after execute', err);
+    }));
+}
+
+function execute(buffer) {
+    return checkFileState()
+        .then(() => writeFile(buffer))
+        .catch(err => console.error('an error hanppend when excute', err))
+}
+
+function checkFileState() {
+    return new Promise((resolve) => {
+        fs.stat("./server.log", function (err, stats) {
+            if (!fs.existsSync("./server.log")) {
+                fs.appendFileSync("./server.log");
+                resolve();
+            } else {
+                checkFileSize(stats.size)
+                    .then(resolve)
+            }
+        });
+    });
+}
+
+function checkFileSize(size) {
+    return new Promise((resolve) => {
+        if (size > LOG_FILE_MAX_SIZE) {
+            fs.readdir("/", (err, files) => {
+                if (err) throw err;
+                let fileList = files.filter(function (file) {
+                    return /^server[0-9]*\.log$/i.test(file);
+                });
+
+                for (let i = fileList.length; i > 0; i--) {
+                    if (i >= 10) {
+                        fs.unlinkSync("/" + fileList[i - 1]);
+                        continue;
+                    }
+                    fs.renameSync("/" + fileList[i - 1], "server" + i + ".log");
+                    resolve();
+                }
+            });
+        } else {
+            resolve();
+        }
+    });
+}
+
+function writeFile(buffer) {
+    return new Promise(function (res) {
+        fs.writeFileSync("server.log", buffer, {
+            flag: "a+" //	以读取追加模式打开文件，如果文件不存在则创建。
+        });
+        res();
+    })
 }
 
 /**
@@ -137,57 +139,32 @@ function doLogInFile(buffer) {
  * @param {*} InitLogger
  */
 function InitLogger() {
-    //  console.log("初始化日志系统   ok");
+    //  console.info("初始化日志系统   ok");
 }
 
 function loggerInFile(level, data, ...args) {
-    let extend = [];
-    args.map(arg => {
-        // console.log("arg",Object.prototype.toString.call(arg));
-        switch (Object.prototype.toString.call(arg)) {
-            case '[object Object]':
-                arg = JSON.stringify(arg, function (key, value) {
-                    return value;
-                }, 4);
-                break;
-            case '[object Function]':
-            case '[object Number]':
-            case '[object Boolean]':
-            case '[object String]':
-                break;
-            case '[object Null]':
-                arg = 'null';
-                break;
-            default:
-                arg = JSON.stringify(arg);
-                break;
+    console[level].apply(this, Array.prototype.slice.call(arguments).slice(1));
+    let extend = "";
+    if (args.length) {
+        extend = args.map(s => JSON.stringify(s, function (p, o) {
+            if (typeof o === 'function') {
+                return Function.prototype.toString.call(o)
+            } else {
+                for (var k in o) {
+                    var v = o[k];
+                    o[k] = v instanceof Function ? String(v) : v;
+                }
+                return o;
+            }
+        }, 4));
+        if (extend) {
+            extend = `  [ext] ${extend}`;
         }
-        // console.log("arg000",arg);
-        if (Object.prototype.toString.call(arg) === '[object Array]') {
-            extend = arg;
-        } else {
-            extend.push(arg);
-        }
-    });
-    if (extend.length) {
-        extend = `  [ext] ${extend}`;
-    } else {
-        extend = "";
     }
-    // console.log("extend",extend);
-    if (Object.prototype.toString.call(data) === '[object Null]') {
-        data = "Null";
-    } else if(Object.prototype.toString.call(data) === '[object Object]'){
-        data = JSON.stringify(data, function (key, value) {
-            return value;
-        }, 4);
-    } else if (Object.prototype.toString.call(data) === '[object Undefined]'){
-        data = "";
-    }
-    let strLog = `[${getTime()}]  [${level.toUpperCase()}]` + ` ${data}` + `${extend}`;
-    let content = strLog + "\r\n";
-    console[level](data + extend);
-    doLogInFile(content);
+    data = Object.prototype.toString.call(data) === '[object Object]' ? JSON.stringify(data) : data;
+    let content = `${data}` + `${extend}` + "\r\n";
+    this.time = getTime;
+    doLogInFile(`[${this.time()}]  [${level.toUpperCase()}]  ${content}`);
 }
 
 LOGGER_LEVEL.reduce(function (total, level, cx) {
@@ -196,4 +173,4 @@ LOGGER_LEVEL.reduce(function (total, level, cx) {
     }
 }, [])
 
-module.exports = global.logger = new InitLogger(); //实例化日志函数
+module.exports = logger = new InitLogger();

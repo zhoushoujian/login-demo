@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server.js ",
-    "db": "mongod --dbpath C:\\Users\\Administrator\\Desktop\\登录系统_react\\db --port=27017",
+    "db": "mongod --dbpath D:\\????\\????\\db --port=27017",
     "react": "cd my-app && npm run start"
   }
 }
