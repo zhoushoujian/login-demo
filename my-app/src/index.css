@@ -12,3 +12,158 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.first-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dbede9;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+  background-image: url(./background.jpg);
+}
+.index {
+  display: block;
+  margin-top: -150px;
+}
+
+.head {
+  width: 300px;
+  font-size: 25px;
+  margin-bottom: 12px;
+  text-align: center;
+  color: white;
+}
+
+.main {
+  display: flex;
+  width: 300px;
+  height: 210px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input-content {
+  display: flex;
+  width: 300px;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  height: 65px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+}
+
+.tips {
+  width: 100%;
+  height: 15px;
+  font-size: 12px;
+  color: red;
+  padding: 0 10px;
+}
+
+.form {
+  display: flex;
+  height: 41px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgb(250, 255, 189);
+  border: 0;
+  outline: 0;
+  padding: 0 10px;
+}
+
+.server-tip {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 12px;
+  color: red;
+  padding: 0 10px;
+}
+
+.button {
+  display: flex;
+  width: 300px;
+  height: 41px;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.foot {
+  display: flex;
+  width: 300px;
+  height: 60px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+}
+
+a:hover {
+  color: red;
+}
+
+.register-area {
+  display: flex;
+  width: 300px;
+  height: 360px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: -150px;
+}
+
+.register-tips {
+  height: 15px;
+  font-size: 9px;
+  color: red;
+  width: 100%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.back {
+  cursor: pointer;
+}
+
+.forget-area {
+  display: flex;
+  width: 300px;
+  height: 240px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: -150px;
+}
+
+.forget-tips {
+  height: 15px;
+  font-size: 9px;
+  color: red;
+  width: 100%;
+  text-align: left;
+  padding-left: 20px;
+}
