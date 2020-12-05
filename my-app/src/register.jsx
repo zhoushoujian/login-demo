@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-
-export default class register extends Component {
+class register extends Component {
 
   state = {
     username: "",
     password: "",
     passwordAgain: "",
-    usernameTip: ""
+    usernameTip: "",
+    passwordTip: ""
   }
 
   registerUsernameBlur = () => {
     const { username } = this.state
-    return window.axios.get(window.hostname + "/username_verify?username=" + username)
+    return window.axios.post(window.hostname + "/username_verify", { username })
       .then((response) => {
-        console.log('response.data', response.data)
+        if (response.result === "exist") {
+          this.setState({ usernameTip: '用户名已存在' })
+        }
       })
       .catch(err => {
-        console.error('handleBlur err', err)
+        if (err !== "用户名不存在") {
+          console.error('registerUsernameBlur err', err)
+        }
       })
   }
 
   registerPwdBlurAgain = () => {
     const { password, passwordAgain } = this.state
     if (password !== passwordAgain) {
-      alert("两次密码不一致")
+      this.setState({ passwordTip: "两次密码不一致" })
     }
   }
 
@@ -36,30 +39,35 @@ export default class register extends Component {
 
   register = () => {
     const { username, password, passwordAgain } = this.state
+    const { history } = this.props
     if (!username) {
-      alert("用户名不能为空!");
+      this.setState({ usernameTip: "用户名不能为空" })
       return;
     } else if (!password) {
-      alert("密码不能为空!");
+      this.setState({ passwordTip: "两次密码不一致" })
       return;
     } else if (password !== passwordAgain) {
-      alert("两次输入的密码不一致，请重新输入");
+      this.setState({ passwordTip: "两次密码不一致" })
       return;
     }
     const data = { username, password }
-    return window.axios.get(window.hostname + "/register_verify", data)
-      .then((response) => {
-        console.log('response.data', response.data)
+    return window.axios.post(window.hostname + "/register_verify", data)
+      .then(() => {
+        history.push("/login")
       })
       .catch(err => {
-        console.error('handleBlur err', err)
+        console.error('register err', err)
+        if (err === "用户名已存在") {
+          this.setState({ usernameTip: err })
+        }
       })
   }
 
   render() {
-    const { username, password, passwordAgain, usernameTip } = this.state
+    const { username, password, passwordAgain, usernameTip, passwordTip } = this.state
+    const { history } = this.props;
     return (
-      <div className="register-area">
+      <div className="login-area">
         <div className="head">注册新用户</div>
         <div className="main">
           <div className="input-content">
@@ -74,7 +82,7 @@ export default class register extends Component {
               onBlur={this.registerUsernameBlur}
               onKeyDown={this.registerKeyDownEvent}
             />
-            <div className="error-tip">{usernameTip}</div>
+            {usernameTip && <div className="error-tip">{usernameTip}</div>}
           </div>
           <div className="input-content">
             <input
@@ -82,7 +90,7 @@ export default class register extends Component {
               placeholder="请输入密码"
               className="form-input"
               value={password}
-              onChange={e => this.setState({ password: e.target.value })}
+              onChange={e => this.setState({ password: e.target.value, passwordTip: "" })}
               onKeyDown={this.registerKeyDownEvent}
             />
           </div>
@@ -94,21 +102,18 @@ export default class register extends Component {
               value={passwordAgain}
               onBlur={this.registerPwdBlurAgain}
               onKeyDown={this.registerKeyDownEvent}
-              onChange={e => this.setState({ passwordAgain: e.target.value })}
+              onChange={e => this.setState({ passwordAgain: e.target.value, passwordTip: "" })}
             />
+            {passwordTip && <div className="error-tip">{passwordTip}</div>}
           </div>
-          <input
-            className="register-button"
-            value="提交"
-            onClick={this.register}
-          />
+          <div className="button" onClick={this.register}>提交</div>
         </div>
         <div className="foot">
-          <Link to="/">
-            <div className="back">返回</div>
-          </Link>
+          <span className="link" onClick={() => history.push("/login")}>返回</span>
         </div>
       </div>
     );
   }
 }
+
+export default register

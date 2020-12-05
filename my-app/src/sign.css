@@ -1,11 +1,10 @@
 .sign-main {
 	display: flex;
-	width: 100vw;
-	height: 100vh;
+	height: 100%;
+    overflow: auto;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	background-color: #dbede9;
 }
 
 .header {
@@ -25,6 +24,7 @@
 .greetings {
 	color: block;
 	font-size: inherit;
+	color: #f9e9cd;
 }
 
 .logout {
@@ -36,10 +36,10 @@
 	height: auto;
 	width: 100%;
 	display: flex;
-	flex-grow: 1;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	height: calc(100% - 48px);
 }
 
 .sign-area {
@@ -62,9 +62,25 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 36px;
-	color: #3CB371;
+	font-size: 32px;
+	color: rgba(238, 63, 77, 0.8);
 	cursor: pointer;
+}
+
+.signed-status {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 32px;
+	cursor: pointer;
+	color: #ededed;
+    background-color: rgba(129, 175, 237, 0.6);
+    border: 0;
+    box-shadow: none;
+    cursor: auto;
 }
 
 .sign:active {
@@ -75,13 +91,8 @@
 .last-sign-time {
 	margin-top: 20px;
 	font-size: 16px;
-	color: #808080;
+	color: #141e1b;
 }
-/* .today {
-	margin-top: 20px;
-	font-size: 16px;
-	color: #808080;
-} */
 
 .count-area {
 	display: flex;
@@ -90,7 +101,8 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	flex: 1
+	flex: 1;
+	height: calc(100% - 348px);
 }
 
 .signed {
@@ -100,20 +112,24 @@
 	flex: 1;
 	padding-top: 15px;
 	min-height: 100px;
+	height: calc(100% / 2);
 }
 
 .signed-text {
 	width: 65px;
 	display: flex;
 	flex-shrink: 0;
+	color: #141e1b;
+	padding-left: 10px;
 }
 
 .signed-persons {
-	color: green;
+	color: #22a2c3;
 	display: flex;
 	width: 100%;
 	word-break: break-all;
 	overflow: auto;
+	padding-right: 10px;
 }
 
 .not-signed {
@@ -123,26 +139,22 @@
 	flex: 1;
 	padding-top: 15px;
 	min-height: 100px;
+	height: calc(100% / 2);
 }
 
 .not-signed-text {
 	width: 65px;
 	display: flex;
 	flex-shrink: 0;
+	color: #141e1b;
+	padding-left: 10px;
 }
 
 .not-signed-persons {
-	color: red;
+	color: #ee3f4d;
 	display: flex;
 	width: 100%;
 	word-break: break-all;
 	overflow: auto;
+	padding-right: 10px;
 }
-/* .foot {
-	display: flex;
-	width: 100%;
-	height: 64px;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-} */

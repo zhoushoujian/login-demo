@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+// import { Router, Route, browserHistory } from 'react-router';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios'
 import Login from './login'
 import Register from './register'
@@ -7,10 +8,10 @@ import Forget from './forget'
 import sign from './sign';
 
 window.axios = axios
-window.hostname = "http://localhost:8000"
+window.hostname = "http://localhost:8080"
 
 axios.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('tk')
+  const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = token
   }
@@ -20,26 +21,22 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(err);
 });
 axios.interceptors.response.use(
-  response => {
-    return response.data;
-  },
-  error => {
-    return Promise.reject(error.response);
-  }
+  response => response.data,
+  error => Promise.reject(error.response.data.err)
 );
 
 class Routers extends Component {
   render() {
     return (
-      <div className="outter">
-        <Router history={browserHistory}>
+      <Router>
+        <Switch>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/forget" component={Forget} />
           <Route path="/sign" component={sign} />
           <Route path="/" component={Login} />
-        </Router>
-      </div>
+        </Switch>
+      </Router>
     )
   }
 }
