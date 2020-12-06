@@ -25,6 +25,10 @@ https://www.cnblogs.com/zhoulifeng/p/9429597.html
 
 4. 签到
 
+5. 获取上次签到时间
+
+6. 获取其他成员签到情况
+
 ## Attention
 
 1. 需要安装mongodb客户端，然后关联mongodb到环境变量，只有这样才可以直接使用mongod，否则会报错：mongod不是内部命令，也不是外部命令
@@ -33,6 +37,10 @@ https://www.cnblogs.com/zhoulifeng/p/9429597.html
 
 3. 为了更加了解开发原理，前端没有使用ui框架，后端服务也没有使用框架，不同的公司可能使用不同的框架，所致只有了解底层知识才能更好的借助框架开发
 
-## Preview
+## Experience
 
-![preview](./preview.png)
+https://login.zhoushoujian.com
+
+## License
+
+MIT
