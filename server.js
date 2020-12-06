@@ -22,8 +22,8 @@ function mongoSink() {
         logger.error("MongoClient.connect  err", err);
         process.exit(1)
       }
-      const dbo = db.db("user");
-      const model = dbo.collection("info");
+      const dbo = db.db("charm");
+      const model = dbo.collection("login-demo");
       return res(model)
     });
   })
