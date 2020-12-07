@@ -6,7 +6,8 @@ class register extends Component {
     password: "",
     passwordAgain: "",
     usernameTip: "",
-    passwordTip: ""
+    passwordTip: "",
+    successTip: ""
   }
 
   registerUsernameBlur = () => {
@@ -39,7 +40,6 @@ class register extends Component {
 
   register = () => {
     const { username, password, passwordAgain } = this.state
-    const { history } = this.props
     if (!username) {
       this.setState({ usernameTip: "用户名不能为空" })
       return;
@@ -53,7 +53,9 @@ class register extends Component {
     const data = { username, password }
     return window.axios.post(window.hostname + "/register_verify", data)
       .then(() => {
-        history.push("/login")
+        this.setState({
+          successTip: "注册成功"
+        })
       })
       .catch(err => {
         console.error('register err', err)
@@ -64,7 +66,7 @@ class register extends Component {
   }
 
   render() {
-    const { username, password, passwordAgain, usernameTip, passwordTip } = this.state
+    const { username, password, passwordAgain, usernameTip, passwordTip, successTip } = this.state
     const { history } = this.props;
     return (
       <div className="login-area">
@@ -107,6 +109,7 @@ class register extends Component {
             {passwordTip && <div className="error-tip">{passwordTip}</div>}
           </div>
           <div className="button" onClick={this.register}>提交</div>
+          {successTip && <div style={{textAlign: 'center'}} className="error-tip">{successTip}</div>}
         </div>
         <div className="foot">
           <span className="link" onClick={() => history.push("/login")}>返回</span>

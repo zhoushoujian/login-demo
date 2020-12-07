@@ -67,7 +67,7 @@ class Sign extends Component {
         const year = new Date().getFullYear(),
           month = new Date().getMonth() + 1,
           day = new Date().getDate(),
-          date = `${year}_${month}_${day}`
+          date = `${year}.${month}.${day}`
 
         const signedArray = [], unsignedArray = [], info = response.result;
         for (let i = 0, l = info.length; i < l; i++) {

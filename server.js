@@ -259,7 +259,7 @@ mongoSink()
             const year = new Date().getFullYear();
             const month = new Date().getMonth() + 1;
             const day = new Date().getDate();
-            const date = `${year}_${month}_${day}`; //获取服务器当前时间
+            const date = `${year}.${month}.${day}`; //获取服务器当前时间
             logger.info("go_sign  date", date);
             req.on('data', function (chunk) {
               data += chunk;
