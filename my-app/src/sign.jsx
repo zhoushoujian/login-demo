@@ -79,7 +79,7 @@ class Sign extends Component {
         }
         let signStatus = false
         if (signedArray.includes(this.username)) {
-          signStatus= true;
+          signStatus = true;
         }
         this.setState({
           alreadySignPersons: signedArray,
@@ -113,8 +113,9 @@ class Sign extends Component {
   }
 
   logout = () => {
+    const { history } = this.props
     localStorage.removeItem("token");
-    this.props.history.push("/login")
+    history.push("/login")
     return;
   }
 
@@ -131,8 +132,8 @@ class Sign extends Component {
           <div className="sign-area">
             {
               signStatus 
-              ? <div className="signed-status">已签到</div>
-              : <div className="sign" onClick={this.signIn}>签到</div>
+                ? <div className="signed-status">已签到</div>
+                : <div className="sign" onClick={this.signIn}>签到</div>
             }
             <div className="last-sign-time">
               <span>上一次签到时间：</span>

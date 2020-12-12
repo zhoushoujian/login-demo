@@ -9,10 +9,9 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.11.0",
+    "eslint": "^6.6.0",
     "eslint-config-ts-base": "0.0.3",
     "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-react-hooks": "^4.0.4"
   },
   "license": "MIT",
@@ -21,7 +20,7 @@
     "start": "node server.js ",
     "db": "mongod --dbpath db --port=27017",
     "react": "cd my-app && npm run start",
-    "eslint": "eslint -c .eslintrc.js \"**/*.{js,jsx}\"",
+    "eslint": "eslint server.js && cd my-app && npm run eslint",
     "build": "cd my-app && npm run build"
   },
   "repository": "https://github.com/zhoushoujian/login-demo"

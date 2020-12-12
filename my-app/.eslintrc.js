@@ -1,8 +1,13 @@
 module.exports = {
   extends: ["eslint-config-ts-base"],
   parser: "babel-eslint",
+  globals: {
+    Babel: true,
+    React: true,
+  },
   rules: {
-    semi: 0
+    semi: 0,
+    "no-alert": 0
   },
   env: {
     browser: true,
@@ -10,5 +15,5 @@ module.exports = {
     node: true
   },
 
-  plugins: ["babel"],
+  plugins: ["react", "import", "react-hooks", "jsx-a11y", "babel"],
 };

@@ -445,4 +445,12 @@ mongoSink()
       console.info(`服务localhost启动成功,正在监听8080端口`);
       process.title = `服务localhost启动成功,正在监听8080端口`;
     });
+
+    process.on('unhandledRejection', (error) => {
+      logger.error('unhandledRejection', error.stack || error.toString());
+    });
+
+    process.on('uncaughtException', function (error) {
+      logger.error('uncaughtException', error.stack || error.toString());
+    });
   })

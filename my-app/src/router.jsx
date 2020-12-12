@@ -26,7 +26,7 @@ axios.interceptors.response.use(
 );
 
 class Routers extends Component {
-  render() {
+  static render() {
     return (
       <Router>
         <Switch>

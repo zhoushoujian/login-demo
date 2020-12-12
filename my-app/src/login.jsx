@@ -34,9 +34,10 @@ class Login extends Component {
     }
     return window.axios.post(window.hostname + "/login_verify", data)
       .then((response) => {
+        const { history } = this.props
         localStorage.setItem("token", response.result.token)
         localStorage.setItem("username", response.result.username)
-        this.props.history.push("/sign")
+        history.push("/sign")
       })
       .catch(err => {
         console.error('login err', err)

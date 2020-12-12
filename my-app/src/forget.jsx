@@ -29,7 +29,7 @@ export default class forget extends Component {
     if (!username) {
       this.setState({ usernameTip: "用户名不能为空" })
       return;
-    };
+    }
     return window.axios.post(window.hostname + "/forget_pwd", { username })
       .then((response) => {
         this.setState({ usernameTip: `密码：${response.result}` })
@@ -67,7 +67,7 @@ export default class forget extends Component {
         <div className="foot">
           <span className="link" onClick={() => history.push("/login")}>返回</span>
         </div>
-      </div >
+      </div>
     );
   }
 }
