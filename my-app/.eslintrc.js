@@ -7,7 +7,8 @@ module.exports = {
   },
   rules: {
     semi: 0,
-    "no-alert": 0
+    "no-alert": 0,
+    "class-methods-use-this": 0
   },
   env: {
     browser: true,
