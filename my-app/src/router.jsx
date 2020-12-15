@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Router, Route, browserHistory } from 'react-router';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios'
 import Login from './login'
@@ -26,7 +25,7 @@ axios.interceptors.response.use(
 );
 
 class Routers extends Component {
-  static render() {
+  render() {
     return (
       <Router>
         <Switch>
